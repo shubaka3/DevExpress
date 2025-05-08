@@ -1,0 +1,21 @@
+﻿/* Zebra striping */
+.dx-datagrid-rowsview .dx-row:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Hover row */
+.dx-datagrid-rowsview .dx-row:hover {
+    background-color: #e0f7fa;
+}
+
+/* Action buttons */
+.grid-action-btn {
+    margin: 0 4px;
+    color: #007bff;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+    .grid-action-btn:hover {
+        color: #0056b3;
+    }

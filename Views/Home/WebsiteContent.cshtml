@@ -1,0 +1,78 @@
+﻿@using DXWebApplication1.Models
+
+@{
+    ViewBag.Title = "WebsiteContent";
+}
+
+<h2>Website Content</h2>
+
+@(Html.DevExtreme().DataGrid<WebsiteContent>()
+    .ID("websiteContentGrid")
+    .DataSource(d => d.WebApi()
+        .Controller("SampleData")
+        .LoadAction("GetWebsiteContent")
+        .Key("Title")
+    )
+    .Columns(columns => {
+        columns.AddFor(m => m.Title).Caption("📝 Tiêu đề");
+        columns.AddFor(m => m.Slogan).Caption("🎯 Khẩu hiệu");
+        columns.AddFor(m => m.MainContent).Caption("📄 Nội dung chính");
+        columns.AddFor(m => m.SeoTitle).Caption("🔍 SEO Title");
+        columns.AddFor(m => m.SeoKeywords).Caption("🔑 SEO Keywords");
+
+        columns.Add().Caption("🔧 Thao tác").CellTemplate(@<text>
+            <span class="grid-action-btn btn-view" data-key="<%- data.Title %>"
+                  data-slogan="<%- data.Slogan %>"
+                  data-maincontent="<%- data.MainContent %>"
+                  data-seotitle="<%- data.SeoTitle %>"
+                  data-seokeywords="<%- data.SeoKeywords %>">👁️ View</span>
+            <span class="grid-action-btn btn-edit" data-key="<%- data.Title %>">✏️ Edit</span>
+            <span class="grid-action-btn btn-delete" data-key="<%- data.Title %>">🗑️ Delete</span>
+        </text>);
+
+    })
+   .ShowBorders(true)
+    .ColumnAutoWidth(true)
+    .ColumnHidingEnabled(true)
+    .Paging(p => p.PageSize(5)) 
+    .RemoteOperations(true) 
+    .FilterRow(f => f.Visible(true))
+    .HeaderFilter(f => f.Visible(true))
+    .GroupPanel(p => p.Visible(true))
+    .Grouping(g => g.AutoExpandAll(false))
+    .Scrolling(s => s.Mode(GridScrollingMode.Virtual).ColumnRenderingMode(GridColumnRenderingMode.Virtual))
+    .Pager(p => p
+        .Visible(true) 
+        .ShowPageSizeSelector(true) 
+        .AllowedPageSizes(new[] { 5, 10, 20 }) 
+    )
+)
+
+@section Styles {
+    <link href="~/Content/custom-grid.css" rel="stylesheet" />
+}
+
+@section Scripts {
+   
+    <script src="~/Scripts/custom-grid.js"></script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="actionModalLabel">Thông tin hành động</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage"></p>
+                    <!-- Thêm thông tin nếu cần -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="confirmButton">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
